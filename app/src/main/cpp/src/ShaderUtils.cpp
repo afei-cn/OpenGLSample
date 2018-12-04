@@ -51,6 +51,9 @@ GLuint CreateProgram(const char *vertexSource, const char *fragmentSource) {
     // 3. attach shader
     glAttachShader(program, vertexShader);
     glAttachShader(program, fragmentShader);
+    // we can delete shader after attach
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
     // 4. link program
     glLinkProgram(program);
     // 5. check link status

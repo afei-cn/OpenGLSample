@@ -16,6 +16,8 @@ public class SampleActivity extends AppCompatActivity {
     public static final int TYPE_NATIVE = 0;
     public static final int TYPE_JAVA = 1;
 
+    private GLSurfaceView mGlSurfaceView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,17 +25,17 @@ public class SampleActivity extends AppCompatActivity {
             Log.e(TAG, "con't support OpenGL ES 3.0!");
             finish();
         }
-        GLSurfaceView glSurfaceView = new GLSurfaceView(this);
-        glSurfaceView.setEGLContextClientVersion(3);
-        glSurfaceView.setRenderer(getRenderer());
-        glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        setContentView(glSurfaceView);
+        mGlSurfaceView = new GLSurfaceView(this);
+        mGlSurfaceView.setEGLContextClientVersion(3);
+        mGlSurfaceView.setRenderer(getRenderer());
+        mGlSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setContentView(mGlSurfaceView);
     }
 
     private GLSurfaceView.Renderer getRenderer() {
         Intent intent = getIntent();
         int type = intent.getIntExtra(TYPE_NAME, TYPE_NATIVE);
-        GLSurfaceView.Renderer renderer = null;
+        GLSurfaceView.Renderer renderer;
         if (type == TYPE_NATIVE) {
             renderer = new NativeRenderer(this);
         } else {
@@ -46,5 +48,17 @@ public class SampleActivity extends AppCompatActivity {
         ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         ConfigurationInfo info = am.getDeviceConfigurationInfo();
         return (info.reqGlEsVersion >= 0x30000);
+    }
+
+    @Override
+    protected void onPause() {
+        mGlSurfaceView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        mGlSurfaceView.onResume();
+        super.onResume();
     }
 }
