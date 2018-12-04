@@ -13,8 +13,8 @@ char *readAssetFile(const char *filename, AAssetManager *mgr);
 
 JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glInit
         (JNIEnv *env, jobject instance) {
-    char *vertexShaderSource = readAssetFile("vertex.sh", g_pAssetManager);
-    char *fragmentShaderSource = readAssetFile("fragment.sh", g_pAssetManager);
+    char *vertexShaderSource = readAssetFile("vertex.vsh", g_pAssetManager);
+    char *fragmentShaderSource = readAssetFile("fragment.fsh", g_pAssetManager);
     g_program = CreateProgram(vertexShaderSource, fragmentShaderSource);
     if (g_program == GL_NONE) {
         LOGE("gl init failed!");

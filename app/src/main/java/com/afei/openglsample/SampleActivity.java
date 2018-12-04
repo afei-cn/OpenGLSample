@@ -35,11 +35,12 @@ public class SampleActivity extends AppCompatActivity {
     private GLSurfaceView.Renderer getRenderer() {
         Intent intent = getIntent();
         int type = intent.getIntExtra(TYPE_NAME, TYPE_NATIVE);
+        Log.d(TAG, "type: " + type);
         GLSurfaceView.Renderer renderer;
         if (type == TYPE_NATIVE) {
             renderer = new NativeRenderer(this);
         } else {
-            renderer = new NativeRenderer(this);
+            renderer = new JavaRenderer(this);
         }
         return renderer;
     }

@@ -6,14 +6,15 @@ GLuint LoadShader(GLenum type, const char *shaderSource) {
     // 1. create shader
     GLuint shader = glCreateShader(type);
     if (shader == GL_NONE) {
+        LOGE("create shader failed! type: %d", type);
         return GL_NONE;
     }
     // 2. load shader source
     glShaderSource(shader, 1, &shaderSource, NULL);
     // 3. compile shared source
     glCompileShader(shader);
-    GLint compiled;
     // 4. check compile status
+    GLint compiled;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
     if (compiled == GL_NONE) { // compile failed
         GLint len = 0;
@@ -68,7 +69,7 @@ GLuint CreateProgram(const char *vertexSource, const char *fragmentSource) {
             LOGE("Error link program: %s", log);
             free(log);
         }
-        glDeleteProgram(program); // delete shader
+        glDeleteProgram(program); // delete program
         return GL_NONE;
     }
     return program;
