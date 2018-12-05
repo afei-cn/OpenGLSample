@@ -1,6 +1,5 @@
 #include "com_afei_openglsample_NativeRenderer.h"
 
-#include <stdlib.h>
 #include <android/asset_manager_jni.h>
 #include <GLES3/gl3.h>
 #include "LogUtils.h"
