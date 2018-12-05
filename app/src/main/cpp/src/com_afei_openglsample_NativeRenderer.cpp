@@ -7,6 +7,7 @@
 #include "ShaderUtils.h"
 
 GLuint g_program;
+GLint g_position_handle;
 AAssetManager *g_pAssetManager = NULL;
 
 JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glInit
@@ -17,6 +18,8 @@ JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glInit
     if (g_program == GL_NONE) {
         LOGE("gl init failed!");
     }
+    GLint g_position_handle =glGetAttribLocation(g_program, "vPosition");
+    LOGD("g_position_handle: %d", g_position_handle);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // RGBA (range: 0.0 ~ 1.0)
 }
 
@@ -37,8 +40,8 @@ JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glDraw
     // 1. 选择使用的程序
     glUseProgram(g_program);
     // 2. 加载顶点数据
-    glVertexAttribPointer(0, vertexCount, GL_FLOAT, GL_FALSE, 0, vertices);
-    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(g_position_handle, vertexCount, GL_FLOAT, GL_FALSE, 3 * 4, vertices);
+    glEnableVertexAttribArray(g_position_handle);
     glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 }
 

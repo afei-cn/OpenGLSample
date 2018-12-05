@@ -41,6 +41,7 @@ public class JavaRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        int vertexCount = 3;
         float[] vertices = new float[]{
                 0.0f, 0.5f, 0,
                 -0.5f, -0.5f, 0,
@@ -56,9 +57,9 @@ public class JavaRenderer implements GLSurfaceView.Renderer {
         // 1. 选择使用的程序
         GLES30.glUseProgram(mProgram);
         // 2. 加载顶点数据
-        GLES30.glVertexAttribPointer(mPositionHandle, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
+        GLES30.glVertexAttribPointer(mPositionHandle, vertexCount, GLES30.GL_FLOAT, false, 3 * 4, vertexBuffer);
         GLES30.glEnableVertexAttribArray(mPositionHandle);
-        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3);
+        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, vertexCount);
     }
 
 }
