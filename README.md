@@ -491,4 +491,4 @@ public class ShaderUtils {
 
 ## 五、博客地址
 
-[Android中怎么编写OpenGL ES 3.0？你好三角形，第一个 OpenGL 实例，Native & Java 两种实现](https://blog.csdn.net/afei__/article/details/84821570)
+[Android 为例编写一个 OpenGL ES 3.0 实例，Native & Java 两种实现](https://blog.csdn.net/afei__/article/details/84821570)
