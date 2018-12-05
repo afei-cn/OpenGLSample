@@ -9,8 +9,6 @@
 GLuint g_program;
 AAssetManager *g_pAssetManager = NULL;
 
-char *readAssetFile(const char *filename, AAssetManager *mgr);
-
 JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glInit
         (JNIEnv *env, jobject instance) {
     char *vertexShaderSource = readAssetFile("vertex.vsh", g_pAssetManager);
@@ -53,17 +51,3 @@ JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_registerAssetMa
     }
 }
 
-char *readAssetFile(const char *filename, AAssetManager *mgr) {
-    if (mgr == NULL) {
-        LOGE("pAssetManager is null!");
-        return NULL;
-    }
-    AAsset *pAsset = AAssetManager_open(mgr, filename, AASSET_MODE_UNKNOWN);
-    off_t len = AAsset_getLength(pAsset);
-    char *pBuffer = (char *) malloc(len + 1);
-    pBuffer[len] = '\0';
-    int numByte = AAsset_read(pAsset, pBuffer, len);
-    LOGD("numByte: %d, len: %d", numByte, len);
-    AAsset_close(pAsset);
-    return pBuffer;
-}
