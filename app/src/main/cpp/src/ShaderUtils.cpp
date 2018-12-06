@@ -74,3 +74,18 @@ GLuint CreateProgram(const char *vertexSource, const char *fragmentSource) {
     }
     return program;
 }
+
+char *readAssetFile(const char *filename, AAssetManager *mgr) {
+    if (mgr == NULL) {
+        LOGE("pAssetManager is null!");
+        return NULL;
+    }
+    AAsset *pAsset = AAssetManager_open(mgr, filename, AASSET_MODE_UNKNOWN);
+    off_t len = AAsset_getLength(pAsset);
+    char *pBuffer = (char *) malloc(len + 1);
+    pBuffer[len] = '\0';
+    int numByte = AAsset_read(pAsset, pBuffer, len);
+    LOGD("numByte: %d, len: %d", numByte, len);
+    AAsset_close(pAsset);
+    return pBuffer;
+}

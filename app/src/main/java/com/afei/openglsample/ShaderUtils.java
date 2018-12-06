@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.opengl.GLES30;
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -76,17 +75,12 @@ public class ShaderUtils {
     public static String loadFromAssets(String fileName, Resources resources) {
         String result = null;
         try {
-            InputStream inputStream = resources.getAssets().open(fileName);
-            int len = 0;
-            byte[] buf = new byte[64];
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            while ((len = inputStream.read(buf)) != -1) {
-                baos.write(buf, 0, len);
-            }
-            byte[] content = baos.toByteArray();
-            baos.close();
-            inputStream.close();
-            result = new String(content, "UTF-8");
+            InputStream is = resources.getAssets().open(fileName);
+            int length = is.available();
+            byte[] data = new byte[length];
+            is.read(data);
+            is.close();
+            result = new String(data, "UTF-8");
             result.replace("\\r\\n", "\\n");
         } catch (IOException e) {
             e.printStackTrace();
