@@ -25,7 +25,7 @@ public class ShaderUtils {
         // 4. check compile status
         int[] compiled = new int[1];
         GLES30.glGetShaderiv(shader, GLES30.GL_COMPILE_STATUS, compiled, 0);
-        if (compiled[0] == GLES30.GL_NONE) { // compile failed
+        if (compiled[0] == GLES30.GL_FALSE) { // compile failed
             Log.e(TAG, "Error compiling shader. type: " + type + ":");
             Log.e(TAG, GLES30.glGetShaderInfoLog(shader));
             GLES30.glDeleteShader(shader); // delete shader
@@ -63,7 +63,7 @@ public class ShaderUtils {
         // 5. check link status
         int[] linkStatus = new int[1];
         GLES30.glGetProgramiv(program, GLES30.GL_LINK_STATUS, linkStatus, 0);
-        if (linkStatus[0] == GLES30.GL_NONE) { // link failed
+        if (linkStatus[0] == GLES30.GL_FALSE) { // link failed
             Log.e(TAG, "Error link program: ");
             Log.e(TAG, GLES30.glGetProgramInfoLog(program));
             GLES30.glDeleteProgram(program); // delete program

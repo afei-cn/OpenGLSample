@@ -16,7 +16,7 @@ GLuint LoadShader(GLenum type, const char *shaderSource) {
     // 4. check compile status
     GLint compiled;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-    if (compiled == GL_NONE) { // compile failed
+    if (compiled == GL_FALSE) { // compile failed
         GLint len = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
         if (len > 1) {
@@ -60,7 +60,7 @@ GLuint CreateProgram(const char *vertexSource, const char *fragmentSource) {
     // 5. check link status
     GLint linked;
     glGetProgramiv(program, GL_LINK_STATUS, &linked);
-    if (linked == GL_NONE) { // link failed
+    if (linked == GL_FALSE) { // link failed
         GLint len = 0;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
         if (len > 1) {
