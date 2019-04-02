@@ -1,1 +1,1 @@
-include ':triangle', ':AirHockey'
+include ':triangle', ':AirHockey', ':particles'
