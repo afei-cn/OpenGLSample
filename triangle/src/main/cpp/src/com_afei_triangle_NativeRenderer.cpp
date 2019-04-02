@@ -1,4 +1,4 @@
-#include "com_afei_openglsample_NativeRenderer.h"
+#include "com_afei_triangle_NativeRenderer.h"
 
 #include <android/asset_manager_jni.h>
 #include <GLES3/gl3.h>
@@ -9,7 +9,7 @@ GLuint g_program;
 GLint g_position_handle;
 AAssetManager *g_pAssetManager = NULL;
 
-JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glInit
+JNIEXPORT void JNICALL Java_com_afei_triangle_NativeRenderer_glInit
         (JNIEnv *env, jobject instance) {
     char *vertexShaderSource = readAssetFile("vertex.vsh", g_pAssetManager);
     char *fragmentShaderSource = readAssetFile("fragment.fsh", g_pAssetManager);
@@ -23,12 +23,12 @@ JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glInit
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // 背景颜色设置为黑色 RGBA (range: 0.0 ~ 1.0)
 }
 
-JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glResize
+JNIEXPORT void JNICALL Java_com_afei_triangle_NativeRenderer_glResize
         (JNIEnv *env, jobject instance, jint width, jint height) {
     glViewport(0, 0, width, height); // 设置视距窗口
 }
 
-JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glDraw
+JNIEXPORT void JNICALL Java_com_afei_triangle_NativeRenderer_glDraw
         (JNIEnv *env, jobject instance) {
     GLint vertexCount = 3;
     // OpenGL的世界坐标系是 [-1, -1, 1, 1]
@@ -47,7 +47,7 @@ JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_glDraw
     glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 }
 
-JNIEXPORT void JNICALL Java_com_afei_openglsample_NativeRenderer_registerAssetManager
+JNIEXPORT void JNICALL Java_com_afei_triangle_NativeRenderer_registerAssetManager
         (JNIEnv *env, jobject instance, jobject assetManager) {
     if (assetManager) {
         g_pAssetManager = AAssetManager_fromJava(env, assetManager);

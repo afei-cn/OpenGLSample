@@ -11,7 +11,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/src/main/cpp/inc )
 add_library( native-renderer
              SHARED
              src/main/cpp/src/ShaderUtils.cpp
-             src/main/cpp/src/com_afei_openglsample_NativeRenderer.cpp )
+             src/main/cpp/src/com_afei_triangle_NativeRenderer.cpp )
 
 target_link_libraries( native-renderer
                        # for 'AAssetManager_fromJava'

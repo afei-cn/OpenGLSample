@@ -1,4 +1,4 @@
-package com.afei.openglsample;
+package com.afei.triangle;
 
 import android.app.ActivityManager;
 import android.content.Context;
