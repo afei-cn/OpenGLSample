@@ -1,0 +1,8 @@
+#ifndef OPENGLSAMPLE_TEXTUREUTILS_H
+#define OPENGLSAMPLE_TEXTUREUTILS_H
+
+#include <GLES3/gl3.h>
+
+GLuint loadTexture();
+
+#endif //OPENGLSAMPLE_TEXTUREUTILS_H
