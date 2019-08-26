@@ -7,7 +7,6 @@
 #include "TextureUtils.h"
 
 GLuint g_program;
-GLint g_position_handle;
 AAssetManager *g_pAssetManager = NULL;
 
 JNIEXPORT void JNICALL Java_com_afei_texturedemo_NativeRenderer_glInit
@@ -18,9 +17,6 @@ JNIEXPORT void JNICALL Java_com_afei_texturedemo_NativeRenderer_glInit
     if (g_program == GL_NONE) {
         LOGE("gl init failed!");
     }
-    // vPosition 是在 'vertex.vsh' 文件中定义的
-    g_position_handle =glGetAttribLocation(g_program, "vPosition");
-    LOGD("g_position_handle: %d", g_position_handle);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // 背景颜色设置为黑色 RGBA (range: 0.0 ~ 1.0)
 }
 
