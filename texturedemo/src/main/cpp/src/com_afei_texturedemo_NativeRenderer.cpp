@@ -6,6 +6,10 @@
 #include "ShaderUtils.h"
 #include "TextureUtils.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 GLuint g_program;
 AAssetManager *g_pAssetManager = NULL;
 
@@ -67,3 +71,6 @@ JNIEXPORT void JNICALL Java_com_afei_texturedemo_NativeRenderer_registerAssetMan
     }
 }
 
+#ifdef __cplusplus
+}
+#endif

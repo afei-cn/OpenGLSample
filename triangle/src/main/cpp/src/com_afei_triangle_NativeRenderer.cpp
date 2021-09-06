@@ -5,6 +5,10 @@
 #include "LogUtils.h"
 #include "ShaderUtils.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 GLuint g_program;
 GLint g_position_handle;
 AAssetManager *g_pAssetManager = NULL;
@@ -56,3 +60,6 @@ JNIEXPORT void JNICALL Java_com_afei_triangle_NativeRenderer_registerAssetManage
     }
 }
 
+#ifdef __cplusplus
+}
+#endif
