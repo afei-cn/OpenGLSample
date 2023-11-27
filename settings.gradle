@@ -1,1 +1,20 @@
-include ':triangle', ':AirHockey', ':particles', ':texturedemo', ':yuvdemo'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "OpenGLSample"
+include ':triangle'
+include ':AirHockey'
+include ':particles'
+include ':texturedemo'
+include ':yuvdemo'

@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.18.1)
+project("triangle")
 
 IF (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows")
     ADD_DEFINITIONS(-DWindows)
