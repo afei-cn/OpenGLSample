@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!checkOpenGLES30()) {
-            Log.e(TAG, "con't support OpenGL ES 3.0!");
+            Log.e(TAG, "can't support OpenGL ES 3.0!");
             finish();
         }
         mGlSurfaceView = new GLSurfaceView(this);
