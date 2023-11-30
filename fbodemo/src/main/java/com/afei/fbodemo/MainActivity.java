@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.test1_btn).setOnClickListener(this::onClick);
         findViewById(R.id.test2_btn).setOnClickListener(this::onClick);
         findViewById(R.id.test3_btn).setOnClickListener(this::onClick);
+        findViewById(R.id.test4_btn).setOnClickListener(this::onClick);
+        findViewById(R.id.test5_btn).setOnClickListener(this::onClick);
+        findViewById(R.id.test6_btn).setOnClickListener(this::onClick);
         mGLSurfaceView = findViewById(R.id.gl_surface_view);
     }
 
@@ -35,6 +38,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.test3_btn:
                 mGLSurfaceView.drawBitmapUseFBO();
+                break;
+            case R.id.test4_btn:
+                mGLSurfaceView.drawBitmapMRT(1);
+                break;
+            case R.id.test5_btn:
+                mGLSurfaceView.drawBitmapMRT(2);
+                break;
+            case R.id.test6_btn:
+                mGLSurfaceView.drawBitmapMRT(3);
                 break;
             default:
                 break;

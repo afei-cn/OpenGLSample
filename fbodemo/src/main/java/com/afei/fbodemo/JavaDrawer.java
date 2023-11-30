@@ -43,8 +43,9 @@ public class JavaDrawer {
             1.0f, 1.0f   // 右下角
     };
 
-    private int mGLProgram;
-    private int[] mTextures = new int[2];
+    private int mGLProgramBlur;
+    private int mGlProgramMRT;
+    private int[] mTextures = new int[4];
     private int[] mFBO = new int[1];
 
     private static final byte VERTEX_ORDER[] = {0, 1, 2, 3}; // order to draw vertices
@@ -73,36 +74,40 @@ public class JavaDrawer {
             return;
         }
         String vertexSource = OpenGLUtil.loadFromAssets("vertex.vsh", context.getResources());
-        String fragmentSource = OpenGLUtil.loadFromAssets("boxfilter.fsh", context.getResources());
-        mGLProgram = OpenGLUtil.createProgram(vertexSource, fragmentSource);
-        Log.d(TAG, "createProgram id = " + mGLProgram);
+        String fragmentBlurSource = OpenGLUtil.loadFromAssets("boxfilter.fsh", context.getResources());
+        String fragmentMRTSource = OpenGLUtil.loadFromAssets("mrt.fsh", context.getResources());
+        mGLProgramBlur = OpenGLUtil.createProgram(vertexSource, fragmentBlurSource);
+        mGlProgramMRT = OpenGLUtil.createProgram(vertexSource, fragmentMRTSource);
+        Log.d(TAG, "createProgram mGLProgramBlur = " + mGLProgramBlur + ", mGlProgramMRT = " + mGlProgramMRT);
         GLES30.glGenFramebuffers(mFBO.length, mFBO, 0);
         OpenGLUtil.createTextures(mTextures);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextures[0]);  // 纹理0存放图片数据
         GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0);
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextures[1]);  // 纹理1存放FBO颜色附着
-        // 这里申请的纹理内存大小要和glViewport()的大小保持一致，否则FBO输出的颜色数据可能存放不完整
-        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, viewWidth, viewHeight, 0, GLES30.GL_RGBA,
-                GLES30.GL_UNSIGNED_BYTE, null);
+        for (int i = 1; i < mTextures.length; i++) {
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextures[i]);  // 存放FBO颜色附着
+            // 这里申请的纹理内存大小要和glViewport()的大小保持一致，否则FBO输出的颜色数据可能存放不完整
+            GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, viewWidth, viewHeight, 0, GLES30.GL_RGBA,
+                    GLES30.GL_UNSIGNED_BYTE, null);
+        }
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
     }
 
     public void unInit() {
         GLES30.glDeleteFramebuffers(mFBO.length, mFBO, 0);
         GLES30.glDeleteTextures(mTextures.length, mTextures, 0);
-        GLES30.glDeleteProgram(mGLProgram);
+        GLES30.glDeleteProgram(mGLProgramBlur);
     }
 
     public void drawBitmap(boolean blurFlag) {
-        if (mGLProgram <= 0) {
+        if (mGLProgramBlur <= 0) {
             Log.e(TAG, "mGLProgram not create!");
             return;
         }
         GLES30.glFinish();
         long startTime = System.currentTimeMillis();
 
-        Log.d(TAG, "drawBitmap mGLProgram: " + mGLProgram);
-        GLES30.glUseProgram(mGLProgram); // 指定使用的program
+        Log.d(TAG, "drawBitmap mGLProgram: " + mGLProgramBlur);
+        GLES30.glUseProgram(mGLProgramBlur); // 指定使用的program
         GLES30.glEnable(GLES30.GL_CULL_FACE); // 启动剔除
         // init vertex
         GLES30.glEnableVertexAttribArray(0);
@@ -130,15 +135,15 @@ public class JavaDrawer {
     }
 
     public void drawBitmapUseFBO() {
-        if (mGLProgram <= 0) {
+        if (mGLProgramBlur <= 0) {
             Log.e(TAG, "mGLProgram not create!");
             return;
         }
         GLES30.glFinish();
         long startTime = System.currentTimeMillis();
 
-        Log.d(TAG, "drawBitmapUseFBO mGLProgram: " + mGLProgram);
-        GLES30.glUseProgram(mGLProgram); // 指定使用的program
+        Log.d(TAG, "drawBitmapUseFBO mGLProgram: " + mGLProgramBlur);
+        GLES30.glUseProgram(mGLProgramBlur); // 指定使用的program
         GLES30.glEnable(GLES30.GL_CULL_FACE); // 启动剔除
         // init vertex
         GLES30.glEnableVertexAttribArray(0);
@@ -176,8 +181,59 @@ public class JavaDrawer {
         Log.i(TAG, "drawBitmapUseFBO time(ms): " + (endTime - startTime));
     }
 
-    public void drawBitmapUseMRT() {
+    public void drawBitmapUseMRT(int targetIndex) {
+        if (mGlProgramMRT <= 0) {
+            Log.e(TAG, "mGLProgram not create!");
+            return;
+        }
+        GLES30.glFinish();
+        long startTime = System.currentTimeMillis();
 
+        Log.d(TAG, "drawBitmapUseMRT mGLProgram: " + mGlProgramMRT);
+        GLES30.glUseProgram(mGlProgramMRT); // 指定使用的program
+        GLES30.glEnable(GLES30.GL_CULL_FACE); // 启动剔除
+        // init vertex
+        GLES30.glEnableVertexAttribArray(0);
+        GLES30.glEnableVertexAttribArray(1);
+        GLES30.glVertexAttribPointer(0, VERTEX_SIZE, GLES30.GL_FLOAT, false, VERTEX_STRIDE, mVertexBuffer);
+        GLES30.glVertexAttribPointer(1, VERTEX_SIZE, GLES30.GL_FLOAT, false, VERTEX_STRIDE, mTextureBitmapBuffer);
+        // bind texture
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextures[0]);
+        GLES30.glUniform1i(2, 0);
+
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFBO[0]);
+        GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0, GLES30.GL_TEXTURE_2D, mTextures[1], 0);
+        GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT1, GLES30.GL_TEXTURE_2D, mTextures[2], 0);
+        GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT2, GLES30.GL_TEXTURE_2D, mTextures[3], 0);
+        // 假设有两个颜色附着点，分别对应 GL_COLOR_ATTACHMENT0 和 GL_COLOR_ATTACHMENT1
+        int drawBuffers[] = { GLES30.GL_COLOR_ATTACHMENT0, GLES30.GL_COLOR_ATTACHMENT1, GLES30.GL_COLOR_ATTACHMENT2 };
+        // 将颜色附着点指定给帧缓冲对象
+        GLES30.glDrawBuffers(drawBuffers.length, drawBuffers, 0);
+        GLES30.glDrawElements(GLES30.GL_TRIANGLE_FAN, VERTEX_ORDER.length, GLES30.GL_UNSIGNED_BYTE, mDrawListBuffer);
+
+        // 后面这个Program只是为了把不同的输出显示出来
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);  // 解绑，即重新绑定回屏幕
+        GLES30.glUseProgram(mGLProgramBlur); // 指定使用的program
+        GLES30.glEnable(GLES30.GL_CULL_FACE); // 启动剔除
+        // init vertex
+        GLES30.glEnableVertexAttribArray(0);
+        GLES30.glEnableVertexAttribArray(1);
+        GLES30.glVertexAttribPointer(0, VERTEX_SIZE, GLES30.GL_FLOAT, false, VERTEX_STRIDE, mVertexBuffer);
+        GLES30.glVertexAttribPointer(1, VERTEX_SIZE, GLES30.GL_FLOAT, false, VERTEX_STRIDE, mTextureRotation0Buffer);
+        // bind texture
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE1);
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextures[targetIndex]);
+        GLES30.glUniform1i(2, 1);
+        GLES30.glUniform1i(3, 0);  // set u_kernelSize
+        GLES30.glUniform1i(4, 0);  // set u_boxFilterType
+        GLES30.glDrawElements(GLES30.GL_TRIANGLE_FAN, VERTEX_ORDER.length, GLES30.GL_UNSIGNED_BYTE, mDrawListBuffer);
+//        GLES30.glDisableVertexAttribArray(0);
+//        GLES30.glDisableVertexAttribArray(1);
+
+        GLES30.glFinish();
+        long endTime = System.currentTimeMillis();
+        Log.i(TAG, "drawBitmapUseMRT time(ms): " + (endTime - startTime));
     }
 
 }

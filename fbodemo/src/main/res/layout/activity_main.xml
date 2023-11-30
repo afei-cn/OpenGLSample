@@ -35,4 +35,28 @@
         android:layout_margin="10dp"
         android:text="Draw Bitmap With Blur(Use FBO)"
         android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/test4_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Draw Bitmap MRT(Target1)"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/test5_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Draw Bitmap MRT(Target2)"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/test6_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Draw Bitmap MRT(Target3)"
+        android:textAllCaps="false" />
 </LinearLayout>

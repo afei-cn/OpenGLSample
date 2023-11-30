@@ -35,6 +35,9 @@ public class AutoFitGLSurfaceView extends GLSurfaceView {
     public static final int RENDER_BITMAP_ORIGIN = 0;
     public static final int RENDER_BITMAP_BLUR = 1;
     public static final int RENDER_BITMAP_BLUR_FBO = 2;
+    public static final int RENDER_BITMAP_MRT_1 = 3;
+    public static final int RENDER_BITMAP_MRT_2 = 4;
+    public static final int RENDER_BITMAP_MRT_3 = 5;
 
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
@@ -76,6 +79,12 @@ public class AutoFitGLSurfaceView extends GLSurfaceView {
                     mJavaDrawer.drawBitmap( true);
                 } else if (mRenderMode == RENDER_BITMAP_BLUR_FBO) {
                     mJavaDrawer.drawBitmapUseFBO();
+                } else if (mRenderMode == RENDER_BITMAP_MRT_1) {
+                    mJavaDrawer.drawBitmapUseMRT(1);
+                } else if (mRenderMode == RENDER_BITMAP_MRT_2) {
+                    mJavaDrawer.drawBitmapUseMRT(2);
+                } else if (mRenderMode == RENDER_BITMAP_MRT_3) {
+                    mJavaDrawer.drawBitmapUseMRT(3);
                 } else {  // RENDER_BITMAP_ORIGIN
                     mJavaDrawer.drawBitmap(false);
                 }
@@ -92,6 +101,11 @@ public class AutoFitGLSurfaceView extends GLSurfaceView {
 
     public void drawBitmapUseFBO() {
         mRenderMode = RENDER_BITMAP_BLUR_FBO;
+        requestRender();  // 请求渲染
+    }
+
+    public void drawBitmapMRT(int targetIndex) {
+        mRenderMode = RENDER_BITMAP_MRT_1 + targetIndex - 1;
         requestRender();  // 请求渲染
     }
 
