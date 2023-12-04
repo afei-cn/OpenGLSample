@@ -17,11 +17,12 @@ public class NativeRenderer implements GLSurfaceView.Renderer {
 
     public NativeRenderer(Context context) {
         mContext = context;
+        AssetManager assets = mContext.getAssets();
+        registerAssetManager(assets);
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        registerAssetManager(mContext.getAssets());
         glInit();
     }
 

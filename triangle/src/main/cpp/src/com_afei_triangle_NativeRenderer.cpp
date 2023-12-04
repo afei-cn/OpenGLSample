@@ -56,7 +56,7 @@ JNIEXPORT void JNICALL Java_com_afei_triangle_NativeRenderer_registerAssetManage
     if (assetManager) {
         g_pAssetManager = AAssetManager_fromJava(env, assetManager);
     } else {
-        LOGE("assetManager is null!")
+        LOGE("assetManager is null!");
     }
 }
 

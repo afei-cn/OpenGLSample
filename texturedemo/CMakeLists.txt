@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.18.1)
 project("texturedemo")
 
-IF (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows")
-    ADD_DEFINITIONS(-DWindows)
-ELSE (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
-    ADD_DEFINITIONS(-DLinux)
-ENDIF ()
-
 include_directories( ${CMAKE_SOURCE_DIR}/src/main/cpp/inc )
 
 aux_source_directory( src/main/cpp/src SRC_LIST )

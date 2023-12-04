@@ -67,7 +67,7 @@ JNIEXPORT void JNICALL Java_com_afei_texturedemo_NativeRenderer_registerAssetMan
     if (assetManager) {
         g_pAssetManager = AAssetManager_fromJava(env, assetManager);
     } else {
-        LOGE("assetManager is null!")
+        LOGE("assetManager is null!");
     }
 }
 
