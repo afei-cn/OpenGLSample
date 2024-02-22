@@ -58,9 +58,6 @@ vec4 boxFilterVertical() {
     // 复杂度：N
     for (int i = -u_kernelSize; i <= u_kernelSize; i++) {
         float y = v_texCoor.y + float(i) * yStep;
-        if (y < 0.0 || y > 1.0) {
-            continue;
-        }
         sum += texture(s_texture, vec2(v_texCoor.x, y));
         num++;
     }
